@@ -6,6 +6,7 @@ var camera, camera1, camera2, camera3, scene, renderer;
 var geometry, material, mesh, lamp, bulb;
 
 var altScene, altCamera;
+var stereo;
 
 var ratio = 1.25,
   scale = 0.01,
@@ -112,11 +113,17 @@ function createOrtCamera() {
   camera2.lookAt(scene.position);
 }
 
+function createStereoCamera() {
+  "use strict";
+  stereo = new THREE.StereoCamera();
+}
+
 function createCameras() {
   "use strict";
 
   createOrtCamera();
   createFixedPerspCamera();
+  createStereoCamera();
   camera = camera1;
 }
 
@@ -124,7 +131,7 @@ function createFloor() {
   "use strict";
   wood.wrapS = THREE.RepeatWrapping;
   wood.wrapT = THREE.RepeatWrapping;
-  wood.repeat.set(10, 10);
+  wood.repeat.set(5, 5);
 
   geometry = new THREE.BoxGeometry(500, 100, 10);
   material = floormat[1];
@@ -750,9 +757,9 @@ function onKeyUp(e) {
 function animate() {
   "use strict";
 
-  if(boolCamera1) camera = camera1;
+  if (boolCamera1) camera = camera1;
 
-  if(boolCamera2) camera = camera2;
+  if (boolCamera2) camera = camera2;
 
   if (rotYPosPiece1) figure1.rotateY(0.02);
 
