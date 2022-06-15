@@ -633,14 +633,25 @@ function resizeOrtCamera() {
     camera2.right = window.innerWidth / scale_height;
     camera2.top = window.innerHeight / scale_height;
     camera2.bottom = -window.innerHeight / scale_height;
+
+    altCamera.left = -window.innerWidth / scale_height;
+    altCamera.right = window.innerWidth / scale_height;
+    altCamera.top = window.innerHeight / scale_height;
+    altCamera.bottom = -window.innerHeight / scale_height;
   } else {
     camera2.left = -window.innerWidth / scale_width;
     camera2.right = window.innerWidth / scale_width;
     camera2.top = window.innerHeight / scale_width;
     camera2.bottom = -window.innerHeight / scale_width;
+
+    altCamera.left = -window.innerWidth / scale_width;
+    altCamera.right = window.innerWidth / scale_width;
+    altCamera.top = window.innerHeight / scale_width;
+    altCamera.bottom = -window.innerHeight / scale_width;
   }
 
   camera2.updateProjectionMatrix();
+  altCamera.updateProjectionMatrix();
 }
 
 function resizePerspCamera() {
