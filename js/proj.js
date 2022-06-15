@@ -28,7 +28,7 @@ const objects = [];
 
 //textures
 var wood;
-var boxmat, step1mat, step2mat, floormat, figure1mat, figure2mat, figure3mat;
+var boxmat, step1mat, step2mat, floormat, origamimat;
 
 var origamiTexture = new THREE.TextureLoader().load("textures/origami.jpg");
 var origami = [
@@ -74,6 +74,8 @@ function render() {
   renderer.autoClear = false;
   renderer.clear();
   renderer.render(scene, camera);
+  renderer.render(scene, stereo.cameraL);
+  renderer.render(scene, stereo.cameraR);
   if (boolPause){
     renderer.clearDepth();
     renderer.render(altScene, altCamera);
@@ -190,12 +192,12 @@ function createPalanque() {
 
 function createFigure1() {
   "use strict";
-  material = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
+  material = origamimat[2];
 
   geometry = new THREE.Geometry();
   geometry.vertices.push(
-    new THREE.Vector3(-10.6, 10.6, 1),
-    new THREE.Vector3(10.6, 10.6, 1),
+    new THREE.Vector3(-10.6, 10.6, 1), //left
+    new THREE.Vector3(10.6, 10.6, 1),  //right
     new THREE.Vector3(0, 21.2, 0),
     new THREE.Vector3(0, 0, 0)
   );
@@ -206,10 +208,18 @@ function createFigure1() {
     new THREE.Face3(2, 3, 0)
   );
 
-  geometry.faces[0].color = geometry.faces[0].color = new THREE.Color("red");
-  geometry.faces[1].color = geometry.faces[1].color = new THREE.Color("yellow");
-  geometry.faces[2].color = geometry.faces[2].color = new THREE.Color("yellow");
-  geometry.faces[3].color = geometry.faces[3].color = new THREE.Color("red");
+  geometry.faces[0].color = geometry.faces[0].color = new THREE.Color("white");
+  geometry.faces[1].color = geometry.faces[1].color = new THREE.Color("white");
+  geometry.faces[2].color = geometry.faces[2].color = new THREE.Color("white");
+  geometry.faces[3].color = geometry.faces[3].color = new THREE.Color("white");
+
+  
+  geometry.faceVertexUvs[0] = [];
+
+  geometry.faceVertexUvs[0][2] = [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][3] = [origami[2], origami[3], origami[1]];
+
+  geometry.computeFaceNormals();
 
   figure1 = new THREE.Mesh(geometry, material);
   figure1.position.set(-45, -15, 0);
@@ -220,52 +230,64 @@ function createFigure1() {
 
 function createFigure2() {
   "use strict";
-  material = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
+  material = origamimat[2];
 
   geometry = new THREE.Geometry();
   geometry.vertices.push(
-    new THREE.Vector3(0, 21.2, 0),
-    new THREE.Vector3(-0.5, 16.2, 2),
-    new THREE.Vector3(0, 0, 0),
-    new THREE.Vector3(3.5, 17.7, 0),
-    new THREE.Vector3(-3.5, 17.7, 0),
-    new THREE.Vector3(3, 15, 0),
-    new THREE.Vector3(-3, 15, 0),
-    new THREE.Vector3(-0.5, 15, -1),
-    new THREE.Vector3(0.5, 16.2, 2),
-    new THREE.Vector3(0.5, 15, -1),
+    new THREE.Vector3(0, 21.2, 0), //topo
+    new THREE.Vector3(-0.5, 16.2, 2), //centro left
+    new THREE.Vector3(0, 0, 0), //baixo
+    new THREE.Vector3(3.5, 17.7, 0), //cima dir
+    new THREE.Vector3(-3.5, 17.7, 0), //cima left
+    new THREE.Vector3(3, 15, 0), //baixo dir
+    new THREE.Vector3(-3, 15, 0), //baixo left 
+    new THREE.Vector3(-0.5, 15, -1), //tras centro esq
+    new THREE.Vector3(0.5, 16.2, 2), //frente centro dir
+    new THREE.Vector3(0.5, 15, -1), //tras centro dir
   );
   geometry.faces.push(
-    new THREE.Face3(0, 2, 3),
-    new THREE.Face3(0, 4, 2),
-    new THREE.Face3(1, 4, 6),
-    new THREE.Face3(3, 8, 5),
-    new THREE.Face3(1, 6, 2),
-    new THREE.Face3(8, 2, 5),
-    new THREE.Face3(0, 3, 2),
-    new THREE.Face3(0, 2, 4),
-    new THREE.Face3(5, 2, 9),
-    new THREE.Face3(7, 2, 6),
-    new THREE.Face3(3, 2, 8),
-    new THREE.Face3(4, 1, 2),
-    new THREE.Face3(5, 9, 2),
-    new THREE.Face3(6, 2, 7)
+    new THREE.Face3(0, 2, 3), //0
+    new THREE.Face3(0, 4, 2), //1
+    new THREE.Face3(1, 4, 6), //2
+    new THREE.Face3(3, 8, 5), //3
+    new THREE.Face3(1, 6, 2), //4
+    new THREE.Face3(8, 2, 5), //5
+    new THREE.Face3(0, 3, 2), //6
+    new THREE.Face3(0, 2, 4), //7
+    new THREE.Face3(5, 2, 9), //8
+    new THREE.Face3(7, 2, 6), //9
+    new THREE.Face3(3, 2, 8), //10
+    new THREE.Face3(4, 1, 2), //11
+    new THREE.Face3(5, 9, 2), //12
+    new THREE.Face3(6, 2, 7)  //13
   );
 
-  geometry.faces[0].color = new THREE.Color("red");
-  geometry.faces[1].color = new THREE.Color("yellow");
-  geometry.faces[2].color = new THREE.Color("magenta");
-  geometry.faces[3].color = new THREE.Color("green");
-  geometry.faces[4].color = new THREE.Color("cyan");
-  geometry.faces[5].color = new THREE.Color("blue");
-  geometry.faces[6].color = new THREE.Color("red");
-  geometry.faces[7].color = new THREE.Color("yellow");
-  geometry.faces[8].color = new THREE.Color("cyan");
-  geometry.faces[9].color = new THREE.Color("blue");
-  geometry.faces[10].color = new THREE.Color("green");
-  geometry.faces[11].color = new THREE.Color("magenta");
-  geometry.faces[12].color = new THREE.Color("cyan");
-  geometry.faces[13].color = new THREE.Color("blue");
+  geometry.faces[0].color = new THREE.Color("grey");
+  geometry.faces[1].color = new THREE.Color("grey");
+  geometry.faces[2].color = new THREE.Color("white");
+  geometry.faces[3].color = new THREE.Color("white");
+  geometry.faces[4].color = new THREE.Color("grey");
+  geometry.faces[5].color = new THREE.Color("grey");
+  geometry.faces[6].color = new THREE.Color("white");
+  geometry.faces[7].color = new THREE.Color("white");
+  geometry.faces[8].color = new THREE.Color("grey");
+  geometry.faces[9].color = new THREE.Color("grey");
+  geometry.faces[10].color = new THREE.Color("grey");
+  geometry.faces[11].color = new THREE.Color("grey");
+  geometry.faces[12].color = new THREE.Color("white");
+  geometry.faces[13].color = new THREE.Color("white");
+
+  geometry.faceVertexUvs[0] = [];
+  geometry.faceVertexUvs[0][0] = [origami[0], origami[1], origami[2]];
+  geometry.faceVertexUvs[0][1] = [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][4] = [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][5] = [origami[0], origami[1], origami[2]];
+  geometry.faceVertexUvs[0][8] = [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][9] = [origami[0], origami[1], origami[2]];
+  geometry.faceVertexUvs[0][10] = [origami[0], origami[1], origami[2]];
+  geometry.faceVertexUvs[0][11] = [origami[0], origami[1], origami[3]];
+
+  geometry.computeFaceNormals();
 
   figure2 = new THREE.Mesh(geometry, material);
   figure2.position.set(0, -15, 0);
@@ -276,7 +298,7 @@ function createFigure2() {
 
 function createFigure3() {
   "use strict";
-  material = figure3mat[2];
+  material = origamimat[2];
 
   geometry = new THREE.Geometry();
   geometry.vertices.push(
@@ -423,6 +445,8 @@ function createFigure3() {
   geometry.faces[37].color = new THREE.Color("#bfbfbf");
   geometry.faces[38].color = new THREE.Color("#bfbfbf");
   geometry.faces[39].color = new THREE.Color("#bfbfbf");
+
+  geometry.faceVertexUvs[0] = [];
 
   geometry.faceVertexUvs[0][1] =  [origami[0], origami[1], origami[2]];
   geometry.faceVertexUvs[0][2] =  [origami[0], origami[2], origami[3]];
@@ -638,8 +662,18 @@ function resetGame() {
   createLamps();
   createLights();
 
-  boolReset = false;
-  boolPause = false;
+  boolCamera1 = true;  //1
+  boolCamera2 = false; //2
+  boolPause = false;   //P(p)
+  boolReset = false;   //M(m)
+  
+  changeShadowType = false; //A(a)
+  lightCalc = true; //S(s)
+  
+  directionalLight = true; //D(d)
+  spotLightPiece1 = false; //Z(z)
+  spotLightPiece2 = false; //X(x)
+  spotLightPiece3 = false; //C(c)
 }
 
 function createPauseScreen() {
@@ -692,8 +726,11 @@ function resizePerspCamera() {
   "use strict";
   
   var aspect = window.innerWidth / window.innerHeight;
+  console.log(aspect);
   camera1.aspect = aspect;
   camera1.updateProjectionMatrix();
+  camera1.updateWorldMatrix();
+  stereo.update(camera1);
 }
 
 function onResize() {
@@ -860,6 +897,7 @@ function animate() {
       step1.material = step1mat[2];
       step2.material = step2mat[2];
       floor.material = floormat[2];
+      figure1.material = figure1mat[2];
     } else {
       box.material = boxmat[1];
       step1.material = step1mat[1];
@@ -917,21 +955,10 @@ function createMaterials() {
   step2mat[1] = new THREE.MeshLambertMaterial({ color: 0x805f5f });
   step2mat[2] = new THREE.MeshPhongMaterial({ color: 0x805f5f });
 
-  figure1mat = new Array(3);
-  figure1mat[0] = new THREE.MeshBasicMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture,})
-  figure1mat[1] = new THREE.MeshLambertMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
-  figure1mat[2] = new THREE.MeshPhongMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
-
-  figure2mat = new Array(3);
-  figure2mat[0] = new THREE.MeshBasicMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture,})
-  figure2mat[1] = new THREE.MeshLambertMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
-  figure2mat[2] = new THREE.MeshPhongMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
-
-  figure3mat = new Array(3);
-  figure3mat[0] = new THREE.MeshBasicMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture,})
-  figure3mat[1] = new THREE.MeshLambertMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
-  figure3mat[2] = new THREE.MeshPhongMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
-
+  origamimat = new Array(3);
+  origamimat[0] = new THREE.MeshBasicMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture,})
+  origamimat[1] = new THREE.MeshLambertMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
+  origamimat[2] = new THREE.MeshPhongMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
 }
 
 function init() {
@@ -962,3 +989,4 @@ function init() {
   window.addEventListener("keydown", onKeyDown);
   window.addEventListener("keyup", onKeyUp);
 }
+ 
