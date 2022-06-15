@@ -893,7 +893,6 @@ function animate() {
       step1.material = step1mat[2];
       step2.material = step2mat[2];
       floor.material = floormat[2];
-      figure1.material = figure1mat[2];
     } else {
       box.material = boxmat[1];
       step1.material = step1mat[1];
