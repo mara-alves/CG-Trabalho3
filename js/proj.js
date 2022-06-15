@@ -212,28 +212,30 @@ function createFigure2() {
   geometry = new THREE.Geometry();
   geometry.vertices.push(
     new THREE.Vector3(0, 21.2, 0),
-    new THREE.Vector3(0, 16.2, 2),
+    new THREE.Vector3(-0.5, 16.2, 2),
     new THREE.Vector3(0, 0, 0),
     new THREE.Vector3(3.5, 17.7, 0),
     new THREE.Vector3(-3.5, 17.7, 0),
     new THREE.Vector3(3, 15, 0),
     new THREE.Vector3(-3, 15, 0),
-    new THREE.Vector3(0, 15, -1)
+    new THREE.Vector3(-0.5, 15, -1),
+    new THREE.Vector3(0.5, 16.2, 2),
+    new THREE.Vector3(0.5, 15, -1),
   );
   geometry.faces.push(
     new THREE.Face3(0, 2, 3),
     new THREE.Face3(0, 4, 2),
     new THREE.Face3(1, 4, 6),
-    new THREE.Face3(3, 1, 5),
+    new THREE.Face3(3, 8, 5),
     new THREE.Face3(1, 6, 2),
-    new THREE.Face3(1, 2, 5),
+    new THREE.Face3(8, 2, 5),
     new THREE.Face3(0, 3, 2),
     new THREE.Face3(0, 2, 4),
-    new THREE.Face3(5, 2, 7),
+    new THREE.Face3(5, 2, 9),
     new THREE.Face3(7, 2, 6),
-    new THREE.Face3(3, 2, 1),
+    new THREE.Face3(3, 2, 8),
     new THREE.Face3(4, 1, 2),
-    new THREE.Face3(5, 7, 2),
+    new THREE.Face3(5, 9, 2),
     new THREE.Face3(6, 2, 7)
   );
 
