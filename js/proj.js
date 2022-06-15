@@ -41,10 +41,10 @@ var origami = [
 var pauseTexture = new THREE.TextureLoader().load("textures/pause.jpg");
 
 //booleans for onKeyDown/onKeyUp Events
-var boolCamera1 = true;  //1
+var boolCamera1 = true; //1
 var boolCamera2 = false; //2
-var boolPause = false;   //P(p)
-var boolReset = false;   //M(m)
+var boolPause = false; //P(p)
+var boolReset = false; //M(m)
 
 var rotYPosPiece1 = false; //Q(q)
 var rotYNegPiece1 = false; //W(w)
@@ -74,7 +74,7 @@ function render() {
   renderer.autoClear = false;
   renderer.clear();
   renderer.render(scene, camera);
-  if (boolPause){
+  if (boolPause) {
     renderer.clearDepth();
     renderer.render(altScene, altCamera);
   }
@@ -89,7 +89,11 @@ function createFixedPerspCamera() {
     1,
     1000
   );
-  camera1.position.set(0, 20, 80);
+
+  var dolly = new THREE.Group();
+  dolly.position.set(0, 20, 80);
+  scene.add(dolly);
+  dolly.add(camera1);
   camera1.lookAt(scene.position);
 }
 
@@ -195,7 +199,7 @@ function createFigure1() {
   geometry = new THREE.Geometry();
   geometry.vertices.push(
     new THREE.Vector3(-10.6, 10.6, 1), //left
-    new THREE.Vector3(10.6, 10.6, 1),  //right
+    new THREE.Vector3(10.6, 10.6, 1), //right
     new THREE.Vector3(0, 21.2, 0),
     new THREE.Vector3(0, 0, 0)
   );
@@ -237,10 +241,10 @@ function createFigure2() {
     new THREE.Vector3(3.5, 17.7, 0), //cima dir
     new THREE.Vector3(-3.5, 17.7, 0), //cima left
     new THREE.Vector3(3, 15, 0), //baixo dir
-    new THREE.Vector3(-3, 15, 0), //baixo left 
+    new THREE.Vector3(-3, 15, 0), //baixo left
     new THREE.Vector3(-0.5, 15, -1), //tras centro esq
     new THREE.Vector3(0.5, 16.2, 2), //frente centro dir
-    new THREE.Vector3(0.5, 15, -1), //tras centro dir
+    new THREE.Vector3(0.5, 15, -1) //tras centro dir
   );
   geometry.faces.push(
     new THREE.Face3(0, 2, 3), //0 no color
@@ -256,7 +260,7 @@ function createFigure2() {
     new THREE.Face3(3, 2, 8), //10
     new THREE.Face3(4, 1, 2), //11
     new THREE.Face3(5, 9, 2), //12
-    new THREE.Face3(6, 2, 7)  //13
+    new THREE.Face3(6, 2, 7) //13
   );
 
   geometry.faces[0].color = new THREE.Color("grey");
@@ -276,12 +280,12 @@ function createFigure2() {
 
   geometry.faceVertexUvs[0] = [];
 
-  geometry.faceVertexUvs[0][0] =  [origami[0], origami[1], origami[2]];
-  geometry.faceVertexUvs[0][1] =  [origami[0], origami[1], origami[3]];
-  geometry.faceVertexUvs[0][4] =  [origami[0], origami[1], origami[3]];
-  geometry.faceVertexUvs[0][5] =  [origami[0], origami[1], origami[2]];
-  geometry.faceVertexUvs[0][8] =  [origami[0], origami[1], origami[3]];
-  geometry.faceVertexUvs[0][9] =  [origami[0], origami[1], origami[2]];
+  geometry.faceVertexUvs[0][0] = [origami[0], origami[1], origami[2]];
+  geometry.faceVertexUvs[0][1] = [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][4] = [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][5] = [origami[0], origami[1], origami[2]];
+  geometry.faceVertexUvs[0][8] = [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][9] = [origami[0], origami[1], origami[2]];
   geometry.faceVertexUvs[0][10] = [origami[0], origami[1], origami[2]];
   geometry.faceVertexUvs[0][11] = [origami[0], origami[1], origami[3]];
 
@@ -399,13 +403,13 @@ function createFigure3() {
   geometry.faces[34].color = new THREE.Color("#ffffff");
   geometry.faces[35].color = new THREE.Color("#ffffff");
 
-  geometry.faces[ 1].color = new THREE.Color("#bfbfbf");
-  geometry.faces[ 2].color = new THREE.Color("#bfbfbf");
-  geometry.faces[ 3].color = new THREE.Color("#bfbfbf");
-  geometry.faces[ 4].color = new THREE.Color("#bfbfbf");
-  geometry.faces[ 5].color = new THREE.Color("#bfbfbf");
-  geometry.faces[ 6].color = new THREE.Color("#bfbfbf");
-  geometry.faces[ 7].color = new THREE.Color("#bfbfbf");
+  geometry.faces[1].color = new THREE.Color("#bfbfbf");
+  geometry.faces[2].color = new THREE.Color("#bfbfbf");
+  geometry.faces[3].color = new THREE.Color("#bfbfbf");
+  geometry.faces[4].color = new THREE.Color("#bfbfbf");
+  geometry.faces[5].color = new THREE.Color("#bfbfbf");
+  geometry.faces[6].color = new THREE.Color("#bfbfbf");
+  geometry.faces[7].color = new THREE.Color("#bfbfbf");
 
   geometry.faces[9].color = new THREE.Color("#bfbfbf");
   geometry.faces[10].color = new THREE.Color("#bfbfbf");
@@ -446,15 +450,15 @@ function createFigure3() {
 
   geometry.faceVertexUvs[0] = [];
 
-  geometry.faceVertexUvs[0][1] =  [origami[0], origami[1], origami[2]];
-  geometry.faceVertexUvs[0][2] =  [origami[0], origami[2], origami[3]];
-  geometry.faceVertexUvs[0][3] =  [origami[3], origami[1], origami[2]];
-  geometry.faceVertexUvs[0][4] =  [origami[0], origami[1], origami[3]];
-  geometry.faceVertexUvs[0][5] =  [origami[0], origami[2], origami[3]];
-  geometry.faceVertexUvs[0][6] =  [origami[0], origami[1], origami[3]];
-  geometry.faceVertexUvs[0][7] =  [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][1] = [origami[0], origami[1], origami[2]];
+  geometry.faceVertexUvs[0][2] = [origami[0], origami[2], origami[3]];
+  geometry.faceVertexUvs[0][3] = [origami[3], origami[1], origami[2]];
+  geometry.faceVertexUvs[0][4] = [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][5] = [origami[0], origami[2], origami[3]];
+  geometry.faceVertexUvs[0][6] = [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][7] = [origami[0], origami[1], origami[3]];
 
-  geometry.faceVertexUvs[0][9] =  [origami[0], origami[1], origami[2]];
+  geometry.faceVertexUvs[0][9] = [origami[0], origami[1], origami[2]];
   geometry.faceVertexUvs[0][10] = [origami[0], origami[2], origami[3]];
   geometry.faceVertexUvs[0][11] = [origami[3], origami[1], origami[2]];
   geometry.faceVertexUvs[0][12] = [origami[0], origami[1], origami[3]];
@@ -651,7 +655,7 @@ function deleteObjects() {
 
 function resetGame() {
   deleteObjects();
-  
+
   createFloor();
   createPalanque();
   createFigure1();
@@ -660,14 +664,14 @@ function resetGame() {
   createLamps();
   createLights();
 
-  boolCamera1 = true;  //1
+  boolCamera1 = true; //1
   boolCamera2 = false; //2
-  boolPause = false;   //P(p)
-  boolReset = false;   //M(m)
-  
+  boolPause = false; //P(p)
+  boolReset = false; //M(m)
+
   changeShadowType = false; //A(a)
   lightCalc = true; //S(s)
-  
+
   directionalLight = true; //D(d)
   spotLightPiece1 = false; //Z(z)
   spotLightPiece2 = false; //X(x)
@@ -675,7 +679,6 @@ function resetGame() {
 }
 
 function createPauseScreen() {
-
   geometry = new THREE.PlaneGeometry(100, 50, 0);
   material = new THREE.MeshBasicMaterial({ map: pauseTexture });
 
@@ -722,7 +725,7 @@ function resizeOrtCamera() {
 
 function resizePerspCamera() {
   "use strict";
-  
+
   var aspect = window.innerWidth / window.innerHeight;
   console.log(aspect);
   camera1.aspect = aspect;
@@ -731,7 +734,7 @@ function resizePerspCamera() {
 
 function onResize() {
   "use strict";
-  
+
   resizeOrtCamera();
   resizePerspCamera();
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -884,8 +887,7 @@ function animate() {
     if (rotYNegPiece3) figure3.rotateY(-0.02);
   }
 
-  if (boolPause) 
-    if (boolReset) resetGame();
+  if (boolPause) if (boolReset) resetGame();
 
   if (lightCalc) {
     if (changeShadowType) {
@@ -951,9 +953,18 @@ function createMaterials() {
   step2mat[2] = new THREE.MeshPhongMaterial({ color: 0x805f5f });
 
   origamimat = new Array(3);
-  origamimat[0] = new THREE.MeshBasicMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture,})
-  origamimat[1] = new THREE.MeshLambertMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
-  origamimat[2] = new THREE.MeshPhongMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
+  origamimat[0] = new THREE.MeshBasicMaterial({
+    vertexColors: THREE.FaceColors,
+    map: origamiTexture,
+  });
+  origamimat[1] = new THREE.MeshLambertMaterial({
+    vertexColors: THREE.FaceColors,
+    map: origamiTexture,
+  });
+  origamimat[2] = new THREE.MeshPhongMaterial({
+    vertexColors: THREE.FaceColors,
+    map: origamiTexture,
+  });
 }
 
 function init() {
@@ -984,4 +995,3 @@ function init() {
   window.addEventListener("keydown", onKeyDown);
   window.addEventListener("keyup", onKeyUp);
 }
- 
