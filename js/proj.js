@@ -28,10 +28,10 @@ const objects = [];
 
 //textures
 var wood;
-var boxmat, step1mat, step2mat, floormat;
+var boxmat, step1mat, step2mat, floormat, figure1mat, figure2mat, figure3mat;
 
-var whiteTexture = new THREE.TextureLoader().load("textures/shiro.jpg");
-var white = [
+var origamiTexture = new THREE.TextureLoader().load("textures/origami.jpg");
+var origami = [
   new THREE.Vector2(0, 0),
   new THREE.Vector2(0, 1),
   new THREE.Vector2(1, 1),
@@ -276,17 +276,7 @@ function createFigure2() {
 
 function createFigure3() {
   "use strict";
-  material = new THREE.MeshPhongMaterial({
-    vertexColors: THREE.FaceColors,
-    map: new THREE.TextureLoader().load("textures/origami.jpg"),
-  });
-
-  var origami = [
-    new THREE.Vector2(0, 0),
-    new THREE.Vector2(0, 1),
-    new THREE.Vector2(1, 1),
-    new THREE.Vector2(1, 0),
-  ];
+  material = figure3mat[2];
 
   geometry = new THREE.Geometry();
   geometry.vertices.push(
@@ -382,12 +372,57 @@ function createFigure3() {
     new THREE.Face3(1, 20, 5) //40
   );
 
-  geometry.faces[0].color = new THREE.Color("white");
-  geometry.faces[8].color = new THREE.Color("white");
-  geometry.faces[32].color = new THREE.Color("white");
-  geometry.faces[33].color = new THREE.Color("white");
-  geometry.faces[34].color = new THREE.Color("white");
-  geometry.faces[35].color = new THREE.Color("white");
+  geometry.faces[0].color = new THREE.Color("#ffffff");
+  geometry.faces[8].color = new THREE.Color("#ffffff");
+  geometry.faces[32].color = new THREE.Color("#ffffff");
+  geometry.faces[33].color = new THREE.Color("#ffffff");
+  geometry.faces[34].color = new THREE.Color("#ffffff");
+  geometry.faces[35].color = new THREE.Color("#ffffff");
+
+  geometry.faces[ 1].color = new THREE.Color("#bfbfbf");
+  geometry.faces[ 2].color = new THREE.Color("#bfbfbf");
+  geometry.faces[ 3].color = new THREE.Color("#bfbfbf");
+  geometry.faces[ 4].color = new THREE.Color("#bfbfbf");
+  geometry.faces[ 5].color = new THREE.Color("#bfbfbf");
+  geometry.faces[ 6].color = new THREE.Color("#bfbfbf");
+  geometry.faces[ 7].color = new THREE.Color("#bfbfbf");
+
+  geometry.faces[9].color = new THREE.Color("#bfbfbf");
+  geometry.faces[10].color = new THREE.Color("#bfbfbf");
+  geometry.faces[11].color = new THREE.Color("#bfbfbf");
+  geometry.faces[12].color = new THREE.Color("#bfbfbf");
+  geometry.faces[13].color = new THREE.Color("#bfbfbf");
+  geometry.faces[14].color = new THREE.Color("#bfbfbf");
+  geometry.faces[15].color = new THREE.Color("#bfbfbf");
+
+  geometry.faces[16].color = new THREE.Color("#bfbfbf");
+  geometry.faces[17].color = new THREE.Color("#bfbfbf");
+
+  geometry.faces[18].color = new THREE.Color("#bfbfbf");
+  geometry.faces[19].color = new THREE.Color("#bfbfbf");
+
+  geometry.faces[20].color = new THREE.Color("#bfbfbf");
+  geometry.faces[21].color = new THREE.Color("#bfbfbf");
+  geometry.faces[22].color = new THREE.Color("#bfbfbf");
+
+  geometry.faces[23].color = new THREE.Color("#bfbfbf");
+  geometry.faces[24].color = new THREE.Color("#bfbfbf");
+  geometry.faces[25].color = new THREE.Color("#bfbfbf");
+
+  geometry.faces[26].color = new THREE.Color("#bfbfbf");
+  geometry.faces[27].color = new THREE.Color("#bfbfbf");
+
+  geometry.faces[28].color = new THREE.Color("#bfbfbf");
+  geometry.faces[29].color = new THREE.Color("#bfbfbf");
+
+  geometry.faces[30].color = new THREE.Color("#bfbfbf");
+
+  geometry.faces[31].color = new THREE.Color("#bfbfbf");
+
+  geometry.faces[36].color = new THREE.Color("#bfbfbf");
+  geometry.faces[37].color = new THREE.Color("#bfbfbf");
+  geometry.faces[38].color = new THREE.Color("#bfbfbf");
+  geometry.faces[39].color = new THREE.Color("#bfbfbf");
 
   geometry.faceVertexUvs[0][1] =  [origami[0], origami[1], origami[2]];
   geometry.faceVertexUvs[0][2] =  [origami[0], origami[2], origami[3]];
@@ -435,7 +470,6 @@ function createFigure3() {
   geometry.faceVertexUvs[0][39] = [origami[0], origami[2], origami[3]];
 
   geometry.computeFaceNormals();
-  //geometry.computeVertexNormals();
 
   figure3 = new THREE.Mesh(geometry, material);
   figure3.position.set(45, -15, 0);
@@ -747,13 +781,11 @@ function onKeyDown(e) {
       boolCamera2 = true;
       break;
 
-    case 80:  //P
-    case 112: //p
+    case 32: //SPACE
       boolPause = !boolPause;
       break;
 
-    case 77:
-    case 109:
+    case 51: //3
       boolReset = !boolReset;
       break;
   }
@@ -884,6 +916,22 @@ function createMaterials() {
   step2mat[0] = new THREE.MeshBasicMaterial({ color: 0x805f5f });
   step2mat[1] = new THREE.MeshLambertMaterial({ color: 0x805f5f });
   step2mat[2] = new THREE.MeshPhongMaterial({ color: 0x805f5f });
+
+  figure1mat = new Array(3);
+  figure1mat[0] = new THREE.MeshBasicMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture,})
+  figure1mat[1] = new THREE.MeshLambertMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
+  figure1mat[2] = new THREE.MeshPhongMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
+
+  figure2mat = new Array(3);
+  figure2mat[0] = new THREE.MeshBasicMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture,})
+  figure2mat[1] = new THREE.MeshLambertMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
+  figure2mat[2] = new THREE.MeshPhongMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
+
+  figure3mat = new Array(3);
+  figure3mat[0] = new THREE.MeshBasicMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture,})
+  figure3mat[1] = new THREE.MeshLambertMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
+  figure3mat[2] = new THREE.MeshPhongMaterial( {vertexColors: THREE.FaceColors, map: origamiTexture});
+
 }
 
 function init() {
