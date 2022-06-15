@@ -609,11 +609,13 @@ function resetGame() {
 }
 
 function createPauseScreen() {
-  geometry = new THREE.PlaneGeometry(80, 40, 0);
+
+  geometry = new THREE.PlaneGeometry(100, 50, 0);
   material = new THREE.MeshBasicMaterial({ map: pauseTexture });
 
   pauseScreen = new THREE.Mesh(geometry, material);
-  pauseScreen.position.set(0, 5, 20);
+  pauseScreen.position.set(0, 30, -100);
+
   altScene.add(pauseScreen);
 }
 
