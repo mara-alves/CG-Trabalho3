@@ -33,9 +33,10 @@ var boxmat, step1mat, step2mat, floormat;
 var pauseTexture = new THREE.TextureLoader().load("textures/pause.jpg");
 
 //booleans for onKeyDown/onKeyUp Events
-var boolCamera1 = true; //1
+var boolCamera1 = true;  //1
 var boolCamera2 = false; //2
-var boolPause = false; //S = true /R = false
+var boolPause = false;   //P(p)
+var boolReset = false;   //M(m)
 
 var rotYPosPiece1 = false; //Q(q)
 var rotYNegPiece1 = false; //W(w)
@@ -62,9 +63,13 @@ function render() {
 
   delta = clock.getDelta();
 
+  renderer.autoClear = false;
   renderer.clear();
   renderer.render(scene, camera);
-  renderer.render(altScene, altCamera);
+  if (boolPause){
+    renderer.clearDepth();
+    renderer.render(altScene, altCamera);
+  }
 }
 
 function createFixedPerspCamera() {
@@ -265,7 +270,7 @@ function createFigure3() {
   "use strict";
   material = new THREE.MeshLambertMaterial({
     vertexColors: THREE.FaceColors,
-    map: THREE.ImageUtils.loadTexture("textures/origami.jpg"),
+    map: new THREE.TextureLoader().load("textures/origami.jpg"),
   });
 
   var origami = [
@@ -532,8 +537,6 @@ function createAltScene() {
 
   altCamera.position.set = (0, 20, 200);
   altCamera.lookAt(altScene.position);
-
-  altScene.add(pauseScreen);
 }
 
 function createLights() {
@@ -568,12 +571,17 @@ function createLights() {
   spot3.position.set(45, 50, 0);
   spot3.target = figure3;
   scene.add(spot3);
+
+  objects.push(light);
+  objects.push(spot1);
+  objects.push(spot2);
+  objects.push(spot3);
 }
 
 function deleteObjects() {
   var toRemove = objects.length - 1;
 
-  while (toRemove > 0) {
+  while (toRemove >= 0) {
     scene.remove(objects[toRemove]);
     toRemove--;
   }
@@ -581,8 +589,17 @@ function deleteObjects() {
 
 function resetGame() {
   deleteObjects();
-  createScene();
-  createAltScene();
+  
+  createFloor();
+  createPalanque();
+  createFigure1();
+  createFigure2();
+  createFigure3();
+  createLamps();
+  createLights();
+
+  boolReset = false;
+  boolPause = false;
 }
 
 function createPauseScreen() {
@@ -590,9 +607,8 @@ function createPauseScreen() {
   material = new THREE.MeshBasicMaterial({ map: pauseTexture });
 
   pauseScreen = new THREE.Mesh(geometry, material);
-  pauseScreen.visible = true;
-
   pauseScreen.position.set(0, 5, 20);
+  altScene.add(pauseScreen);
 }
 
 function resizeOrtCamera() {
@@ -712,8 +728,15 @@ function onKeyDown(e) {
       boolCamera2 = true;
       break;
 
-    case 83: //S
-      pauseScreen.visible = !pauseScreen.visible;
+    case 80:  //P
+    case 112: //p
+      boolPause = !boolPause;
+      break;
+
+    case 77:
+    case 109:
+      boolReset = !boolReset;
+      break;
   }
 
   // IMPORTANTE: NÃO TROCAR AS CÂMARAS AQUI
@@ -763,17 +786,22 @@ function animate() {
 
   if (boolCamera2) camera = camera2;
 
-  if (rotYPosPiece1) figure1.rotateY(0.02);
+  if (!boolPause) {
+    if (rotYPosPiece1) figure1.rotateY(0.02);
 
-  if (rotYNegPiece1) figure1.rotateY(-0.02);
+    if (rotYNegPiece1) figure1.rotateY(-0.02);
 
-  if (rotYPosPiece2) figure2.rotateY(0.02);
+    if (rotYPosPiece2) figure2.rotateY(0.02);
 
-  if (rotYNegPiece2) figure2.rotateY(-0.02);
+    if (rotYNegPiece2) figure2.rotateY(-0.02);
 
-  if (rotYPosPiece3) figure3.rotateY(0.02);
+    if (rotYPosPiece3) figure3.rotateY(0.02);
 
-  if (rotYNegPiece3) figure3.rotateY(-0.02);
+    if (rotYNegPiece3) figure3.rotateY(-0.02);
+  }
+
+  if (boolPause) 
+    if (boolReset) resetGame();
 
   if (lightCalc) {
     if (changeShadowType) {
