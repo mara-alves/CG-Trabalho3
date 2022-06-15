@@ -74,8 +74,6 @@ function render() {
   renderer.autoClear = false;
   renderer.clear();
   renderer.render(scene, camera);
-  renderer.render(scene, stereo.cameraL);
-  renderer.render(scene, stereo.cameraR);
   if (boolPause){
     renderer.clearDepth();
     renderer.render(altScene, altCamera);
@@ -213,7 +211,6 @@ function createFigure1() {
   geometry.faces[2].color = geometry.faces[2].color = new THREE.Color("white");
   geometry.faces[3].color = geometry.faces[3].color = new THREE.Color("white");
 
-  
   geometry.faceVertexUvs[0] = [];
 
   geometry.faceVertexUvs[0][2] = [origami[0], origami[1], origami[3]];
@@ -246,8 +243,8 @@ function createFigure2() {
     new THREE.Vector3(0.5, 15, -1), //tras centro dir
   );
   geometry.faces.push(
-    new THREE.Face3(0, 2, 3), //0
-    new THREE.Face3(0, 4, 2), //1
+    new THREE.Face3(0, 2, 3), //0 no color
+    new THREE.Face3(0, 4, 2), //1  no color
     new THREE.Face3(1, 4, 6), //2
     new THREE.Face3(3, 8, 5), //3
     new THREE.Face3(1, 6, 2), //4
@@ -278,12 +275,13 @@ function createFigure2() {
   geometry.faces[13].color = new THREE.Color("white");
 
   geometry.faceVertexUvs[0] = [];
-  geometry.faceVertexUvs[0][0] = [origami[0], origami[1], origami[2]];
-  geometry.faceVertexUvs[0][1] = [origami[0], origami[1], origami[3]];
-  geometry.faceVertexUvs[0][4] = [origami[0], origami[1], origami[3]];
-  geometry.faceVertexUvs[0][5] = [origami[0], origami[1], origami[2]];
-  geometry.faceVertexUvs[0][8] = [origami[0], origami[1], origami[3]];
-  geometry.faceVertexUvs[0][9] = [origami[0], origami[1], origami[2]];
+
+  geometry.faceVertexUvs[0][0] =  [origami[0], origami[1], origami[2]];
+  geometry.faceVertexUvs[0][1] =  [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][4] =  [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][5] =  [origami[0], origami[1], origami[2]];
+  geometry.faceVertexUvs[0][8] =  [origami[0], origami[1], origami[3]];
+  geometry.faceVertexUvs[0][9] =  [origami[0], origami[1], origami[2]];
   geometry.faceVertexUvs[0][10] = [origami[0], origami[1], origami[2]];
   geometry.faceVertexUvs[0][11] = [origami[0], origami[1], origami[3]];
 
@@ -729,8 +727,6 @@ function resizePerspCamera() {
   console.log(aspect);
   camera1.aspect = aspect;
   camera1.updateProjectionMatrix();
-  camera1.updateWorldMatrix();
-  stereo.update(camera1);
 }
 
 function onResize() {
