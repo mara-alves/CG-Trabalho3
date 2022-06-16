@@ -45,9 +45,8 @@ var pauseTexture = new THREE.TextureLoader().load("textures/pause.jpg");
 var boolCamera1 = true; //1
 var boolCamera2 = false; //2
 
-var boolPause = false;   //SPACE
-var boolReset = false;   //3
-
+var boolPause = false; //SPACE
+var boolReset = false; //3
 
 var rotYPosPiece1 = false; //Q(q)
 var rotYNegPiece1 = false; //W(w)
@@ -78,13 +77,12 @@ function render() {
   renderer.clear();
   renderer.render(scene, camera);
 
-  if (boolPause){
+  if (boolPause) {
     clock.stop();
 
     renderer.clearDepth();
     renderer.render(altScene, altCamera);
-  }
-  else {
+  } else {
     clock.start();
   }
 }
@@ -160,7 +158,7 @@ function createFloor() {
   wood.repeat.set(5, 5);
 
   geometry = new THREE.BoxGeometry(500, 100, 10);
-  material = floormat[1];
+  material = floormat[2];
 
   floor = new THREE.Mesh(geometry, material);
   floor.translateY(-34);
@@ -174,20 +172,20 @@ function createPalanque() {
   "use strict";
   palanque = new THREE.Object3D();
 
-  material = boxmat[1];
-  geometry = new THREE.BoxGeometry(150, 10, 17, 50, 1, 10);
+  material = boxmat[2];
+  geometry = new THREE.BoxGeometry(150, 10, 17, 10, 1, 10);
   box = new THREE.Mesh(geometry, material);
   box.position.set(0, 0, 0);
   palanque.add(box);
 
-  material = step1mat[1];
-  geometry = new THREE.BoxGeometry(45, 6, 8, 50, 1, 10);
+  material = step1mat[2];
+  geometry = new THREE.BoxGeometry(45, 6, 8, 10, 1, 10);
   step1 = new THREE.Mesh(geometry, material);
   step1.position.set(0, 0, 14);
   palanque.add(step1);
 
-  material = step2mat[1];
-  geometry = new THREE.BoxGeometry(25, 3, 8, 50, 1, 10);
+  material = step2mat[2];
+  geometry = new THREE.BoxGeometry(25, 3, 8, 1, 1, 10);
   step2 = new THREE.Mesh(geometry, material);
   step2.position.set(0, 0, 22);
   palanque.add(step2);
@@ -208,9 +206,9 @@ function createFigure1() {
   geometry = new THREE.Geometry();
   geometry.vertices.push(
     new THREE.Vector3(-10.6, 10.6, 1), //left
-    new THREE.Vector3(10.6, 10.6, 1),  //right
-    new THREE.Vector3(0, 21.2, 0),     //up
-    new THREE.Vector3(0, 0, 0)         //down
+    new THREE.Vector3(10.6, 10.6, 1), //right
+    new THREE.Vector3(0, 21.2, 0), //up
+    new THREE.Vector3(0, 0, 0) //down
   );
   geometry.faces.push(
     new THREE.Face3(0, 3, 2),
@@ -891,14 +889,6 @@ function animate() {
 
   if (lightCalc) {
     if (changeShadowType) {
-      box.material = boxmat[2];
-      step1.material = step1mat[2];
-      step2.material = step2mat[2];
-      floor.material = floormat[2];
-      figure1.material = origamimat[2];
-      figure2.material = origamimat[2];
-      figure3.material = origamimat[2];
-    } else {
       box.material = boxmat[1];
       step1.material = step1mat[1];
       step2.material = step2mat[1];
@@ -906,6 +896,14 @@ function animate() {
       figure1.material = origamimat[1];
       figure2.material = origamimat[1];
       figure3.material = origamimat[1];
+    } else {
+      box.material = boxmat[2];
+      step1.material = step1mat[2];
+      step2.material = step2mat[2];
+      floor.material = floormat[2];
+      figure1.material = origamimat[2];
+      figure2.material = origamimat[2];
+      figure3.material = origamimat[2];
     }
   } else {
     box.material = boxmat[0];
@@ -928,10 +926,6 @@ function animate() {
 
   if (spotLightPiece3) spot3.visible = true;
   else spot3.visible = false;
-
-  /* DELETE this is just for testing
-    spotLightHelper.update();
-    */
 
   requestAnimationFrame(animate);
   render();
