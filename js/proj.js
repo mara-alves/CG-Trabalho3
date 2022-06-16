@@ -15,7 +15,8 @@ var ratio = 1.25,
   last_width,
   last_height;
 
-var clock = new THREE.Clock();
+var clock = new THREE.Clock(false);
+clock.start();
 var delta;
 
 //objects
@@ -43,8 +44,8 @@ var pauseTexture = new THREE.TextureLoader().load("textures/pause.jpg");
 //booleans for onKeyDown/onKeyUp Events
 var boolCamera1 = true;  //1
 var boolCamera2 = false; //2
-var boolPause = false;   //P(p)
-var boolReset = false;   //M(m)
+var boolPause = false;   //SPACE
+var boolReset = false;   //3
 
 var rotYPosPiece1 = false; //Q(q)
 var rotYNegPiece1 = false; //W(w)
@@ -69,14 +70,18 @@ var spotLightPiece3 = false; //C(c)
 function render() {
   "use strict";
 
-  delta = clock.getDelta();
+  delta = clock.getElapsedTime();
 
   renderer.autoClear = false;
   renderer.clear();
   renderer.render(scene, camera);
   if (boolPause){
+    clock.stop();
     renderer.clearDepth();
     renderer.render(altScene, altCamera);
+  }
+  else {
+    clock.start();
   }
 }
 
@@ -196,8 +201,8 @@ function createFigure1() {
   geometry.vertices.push(
     new THREE.Vector3(-10.6, 10.6, 1), //left
     new THREE.Vector3(10.6, 10.6, 1),  //right
-    new THREE.Vector3(0, 21.2, 0),
-    new THREE.Vector3(0, 0, 0)
+    new THREE.Vector3(0, 21.2, 0),     //up
+    new THREE.Vector3(0, 0, 0)         //down
   );
   geometry.faces.push(
     new THREE.Face3(0, 3, 2),
@@ -216,7 +221,7 @@ function createFigure1() {
   geometry.faceVertexUvs[0][2] = [origami[0], origami[1], origami[3]];
   geometry.faceVertexUvs[0][3] = [origami[2], origami[3], origami[1]];
 
-  geometry.computeFaceNormals();
+  geometry.computeVertexNormals();
 
   figure1 = new THREE.Mesh(geometry, material);
   figure1.position.set(-45, -15, 0);
@@ -243,8 +248,8 @@ function createFigure2() {
     new THREE.Vector3(0.5, 15, -1), //tras centro dir
   );
   geometry.faces.push(
-    new THREE.Face3(0, 2, 3), //0 no color
-    new THREE.Face3(0, 4, 2), //1  no color
+    new THREE.Face3(0, 2, 3), //0
+    new THREE.Face3(0, 4, 2), //1
     new THREE.Face3(1, 4, 6), //2
     new THREE.Face3(3, 8, 5), //3
     new THREE.Face3(1, 6, 2), //4
@@ -285,7 +290,7 @@ function createFigure2() {
   geometry.faceVertexUvs[0][10] = [origami[0], origami[1], origami[2]];
   geometry.faceVertexUvs[0][11] = [origami[0], origami[1], origami[3]];
 
-  geometry.computeFaceNormals();
+  geometry.computeVertexNormals();
 
   figure2 = new THREE.Mesh(geometry, material);
   figure2.position.set(0, -15, 0);
@@ -491,7 +496,7 @@ function createFigure3() {
   geometry.faceVertexUvs[0][38] = [origami[0], origami[2], origami[3]];
   geometry.faceVertexUvs[0][39] = [origami[0], origami[2], origami[3]];
 
-  geometry.computeFaceNormals();
+  geometry.computeVertexNormals();
 
   figure3 = new THREE.Mesh(geometry, material);
   figure3.position.set(45, -15, 0);
@@ -607,10 +612,6 @@ function createLights() {
   // Directional
   light = new THREE.DirectionalLight(0xffffff, 0.8);
   light.position.set(0, 50, 40);
-  /* DELETE this is just for testing
-    const helper = new THREE.DirectionalLightHelper(light, 10, 0xff000);
-    scene.add(helper);
-    */
   scene.add(light);
 
   // Spotlights
@@ -618,11 +619,6 @@ function createLights() {
   spot1.position.set(-45, 50, 0);
   spot1.target = figure1;
   scene.add(spot1);
-
-  /* DELETE this is just for testing
-   spotLightHelper = new THREE.SpotLightHelper(spot1);
-   scene.add(spotLightHelper);
-   */
 
   spot2 = new THREE.SpotLight(0xffffff, 1, 0, Math.PI / 15);
   spot2.position.set(0, 50, 0);
@@ -871,17 +867,17 @@ function animate() {
   if (boolCamera2) camera = camera2;
 
   if (!boolPause) {
-    if (rotYPosPiece1) figure1.rotateY(0.02);
+    if (rotYPosPiece1) figure1.rotateY(0.5 * delta);
 
-    if (rotYNegPiece1) figure1.rotateY(-0.02);
+    if (rotYNegPiece1) figure1.rotateY(-0.5 * delta);
 
-    if (rotYPosPiece2) figure2.rotateY(0.02);
+    if (rotYPosPiece2) figure2.rotateY(0.5 * delta);
 
-    if (rotYNegPiece2) figure2.rotateY(-0.02);
+    if (rotYNegPiece2) figure2.rotateY(-0.5 * delta);
 
-    if (rotYPosPiece3) figure3.rotateY(0.02);
+    if (rotYPosPiece3) figure3.rotateY(0.5 * delta);
 
-    if (rotYNegPiece3) figure3.rotateY(-0.02);
+    if (rotYNegPiece3) figure3.rotateY(-0.5 * delta);
   }
 
   if (boolPause) 
@@ -893,17 +889,26 @@ function animate() {
       step1.material = step1mat[2];
       step2.material = step2mat[2];
       floor.material = floormat[2];
+      figure1.material = origamimat[2];
+      figure2.material = origamimat[2];
+      figure3.material = origamimat[2];
     } else {
       box.material = boxmat[1];
       step1.material = step1mat[1];
       step2.material = step2mat[1];
       floor.material = floormat[1];
+      figure1.material = origamimat[1];
+      figure2.material = origamimat[1];
+      figure3.material = origamimat[1];
     }
   } else {
     box.material = boxmat[0];
     step1.material = step1mat[0];
     step2.material = step2mat[0];
     floor.material = floormat[0];
+    figure1.material = origamimat[0];
+    figure2.material = origamimat[0];
+    figure3.material = origamimat[0];
   }
 
   if (directionalLight) light.visible = true;
